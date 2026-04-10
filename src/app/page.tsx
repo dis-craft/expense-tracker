@@ -92,12 +92,12 @@ export default function Home() {
                 className="form-select" 
                 id="name" 
                 value={name} 
-                onChange={(e) => setName(e.target.value)} 
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setName(e.target.value)} 
                 required
                 style={{ textTransform: "capitalize" }}
               >
                 <option value="" disabled>Select your name</option>
-                {ROOMMATES.map(r => (
+                {ROOMMATES.map((r: string) => (
                   <option key={r} value={r} style={{ textTransform: "capitalize" }}>{r}</option>
                 ))}
               </select>
@@ -111,7 +111,7 @@ export default function Home() {
               type="password" 
               id="password" 
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
               placeholder="Enter standard or admin password" 
               required 
             />

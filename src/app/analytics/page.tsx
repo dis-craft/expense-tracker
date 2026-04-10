@@ -13,63 +13,63 @@ export default async function AnalyticsPage() {
     prisma.deposit.findMany({ orderBy: { date: "asc" }, include: { user: true } }),
   ]);
 
-  const totalSpent = allExpenses.reduce((s, e) => s + e.amount, 0);
-  const totalDeposited = allDeposits.reduce((s, d) => s + d.amount, 0);
+  const totalSpent = allExpenses.reduce((s: number, e: any) => s + e.amount, 0);
+  const totalDeposited = allDeposits.reduce((s: number, d: any) => s + d.amount, 0);
   const balance = totalDeposited - totalSpent;
   const avgPerPerson = totalSpent / 5;
 
   // --- Category breakdown ---
   const categoryMap: Record<string, number> = {};
-  allExpenses.forEach(e => {
+  allExpenses.forEach((e: any) => {
     categoryMap[e.category] = (categoryMap[e.category] || 0) + e.amount;
   });
   const categoryData = Object.entries(categoryMap)
     .map(([name, value]) => ({ name, value }))
-    .sort((a, b) => b.value - a.value);
+    .sort((a: any, b: any) => b.value - a.value);
 
   // --- Daily spending (last 14 days) ---
-  const last14Days = Array.from({ length: 14 }, (_, i) => subDays(new Date(), 13 - i));
+  const last14Days = Array.from({ length: 14 }, (_: any, i: number) => subDays(new Date(), 13 - i));
   const dailyExpMap: Record<string, number> = {};
-  allExpenses.forEach(e => { const k = format(e.date, "dd MMM"); dailyExpMap[k] = (dailyExpMap[k] || 0) + e.amount; });
-  const dailyData = last14Days.map(d => ({
+  allExpenses.forEach((e: any) => { const k = format(e.date, "dd MMM"); dailyExpMap[k] = (dailyExpMap[k] || 0) + e.amount; });
+  const dailyData = last14Days.map((d: Date) => ({
     name: format(d, "dd MMM"),
     total: dailyExpMap[format(d, "dd MMM")] || 0,
   }));
 
   // --- Weekly spending ---
   const weeklyMap: Record<string, number> = {};
-  allExpenses.forEach(e => {
+  allExpenses.forEach((e: any) => {
     const k = format(startOfWeek(e.date, { weekStartsOn: 1 }), "dd MMM");
     weeklyMap[k] = (weeklyMap[k] || 0) + e.amount;
   });
-  const weeklyData = Object.entries(weeklyMap).map(([name, total]) => ({ name: `w/c ${name}`, total })).slice(-8);
+  const weeklyData = Object.entries(weeklyMap).map(([name, total]: [string, any]) => ({ name: `w/c ${name}`, total })).slice(-8);
 
   // --- Monthly spending ---
   const monthlyMap: Record<string, number> = {};
-  allExpenses.forEach(e => {
+  allExpenses.forEach((e: any) => {
     const k = format(e.date, "MMM yyyy");
     monthlyMap[k] = (monthlyMap[k] || 0) + e.amount;
   });
-  const monthlyData = Object.entries(monthlyMap).map(([name, total]) => ({ name, total }));
+  const monthlyData = Object.entries(monthlyMap).map(([name, total]: [string, any]) => ({ name, total }));
 
   // --- Cumulative spending ---
   let running = 0;
-  const cumulativeData = dailyData.map(d => { running += d.total; return { name: d.name, total: running }; });
+  const cumulativeData = dailyData.map((d: any) => { running += d.total; return { name: d.name, total: running }; });
 
   // --- Per-person spending ---
   const personExpMap: Record<string, number> = {};
-  allExpenses.forEach(e => { personExpMap[e.user.name] = (personExpMap[e.user.name] || 0) + e.amount; });
-  const personData = Object.entries(personExpMap).map(([name, value]) => ({ name, value }));
+  allExpenses.forEach((e: any) => { personExpMap[e.user.name] = (personExpMap[e.user.name] || 0) + e.amount; });
+  const personData = Object.entries(personExpMap).map(([name, value]: [string, any]) => ({ name, value }));
 
   // --- Per-person deposits ---
   const personDepMap: Record<string, number> = {};
-  allDeposits.forEach(d => { personDepMap[d.user.name] = (personDepMap[d.user.name] || 0) + d.amount; });
-  const depositPersonData = Object.entries(personDepMap).map(([name, value]) => ({ name, value }));
+  allDeposits.forEach((d: any) => { personDepMap[d.user.name] = (personDepMap[d.user.name] || 0) + d.amount; });
+  const depositPersonData = Object.entries(personDepMap).map(([name, value]: [string, any]) => ({ name, value }));
 
   // --- Deposits over time (daily, last 14d) ---
   const dailyDepMap: Record<string, number> = {};
-  allDeposits.forEach(d => { const k = format(d.date, "dd MMM"); dailyDepMap[k] = (dailyDepMap[k] || 0) + d.amount; });
-  const dailyDepositData = last14Days.map(d => ({
+  allDeposits.forEach((d: any) => { const k = format(d.date, "dd MMM"); dailyDepMap[k] = (dailyDepMap[k] || 0) + d.amount; });
+  const dailyDepositData = last14Days.map((d: Date) => ({
     name: format(d, "dd MMM"),
     total: dailyDepMap[format(d, "dd MMM")] || 0,
   }));
@@ -90,7 +90,7 @@ export default async function AnalyticsPage() {
           { label: "Per Person (÷5)", value: `₹${avgPerPerson.toFixed(0)}`, color: "var(--primary-accent)" },
           { label: "Transactions", value: `${allExpenses.length}`, color: "white" },
           { label: "Top Category", value: categoryData[0]?.name || "—", color: "var(--secondary-accent)" },
-        ].map(card => (
+        ].map((card: any) => (
           <div key={card.label} className="glass-panel" style={{ textAlign: "center", padding: "18px 12px" }}>
             <p style={{ color: "var(--text-muted)", fontSize: "0.78rem", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.05em" }}>{card.label}</p>
             <p style={{ fontSize: "1.6rem", fontWeight: "700", color: card.color, margin: 0 }}>{card.value}</p>

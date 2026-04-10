@@ -27,16 +27,16 @@ export default async function Dashboard() {
     | { type: "deposit"; id: string; amount: number; date: Date; userName: string };
 
   const timeline: TxItem[] = [
-    ...allExpenses.map(e => ({
+    ...allExpenses.map((e: any) => ({
       type: "expense" as const,
       id: e.id, description: e.description, category: e.category,
       amount: e.amount, date: e.date, userName: e.user.name,
     })),
-    ...allDeposits.map(d => ({
+    ...allDeposits.map((d: any) => ({
       type: "deposit" as const,
       id: d.id, amount: d.amount, date: d.date, userName: d.user.name,
     })),
-  ].sort((a, b) => b.date.getTime() - a.date.getTime());
+  ].sort((a: any, b: any) => b.date.getTime() - a.date.getTime());
 
   // Group by date
   const grouped: Record<string, TxItem[]> = {};
@@ -45,7 +45,7 @@ export default async function Dashboard() {
     if (!grouped[key]) grouped[key] = [];
     grouped[key].push(tx);
   }
-  const sortedDays = Object.keys(grouped).sort((a, b) => (a < b ? 1 : -1));
+  const sortedDays = Object.keys(grouped).sort((a: string, b: string) => (a < b ? 1 : -1));
 
   const today = format(new Date(), "yyyy-MM-dd");
   const yesterday = format(new Date(Date.now() - 86400000), "yyyy-MM-dd");
@@ -91,7 +91,7 @@ export default async function Dashboard() {
             <Plus size={20} color="var(--secondary-accent)" />
             Log Expense
           </h3>
-          <ExpenseForm presets={presets.map(p => p.name)} />
+          <ExpenseForm presets={presets.map((p: any) => p.name)} />
         </div>
       </div>
 
@@ -109,9 +109,9 @@ export default async function Dashboard() {
           <p style={{ textAlign: "center", color: "var(--text-muted)", padding: "40px 0" }}>No transactions yet.</p>
         ) : (
           <div style={{ display: "flex", flexDirection: "column" }}>
-            {sortedDays.map((day, dayIdx) => {
-              const dayExpenses = grouped[day].filter(t => t.type === "expense").reduce((s, t) => s + t.amount, 0);
-              const dayDeposits = grouped[day].filter(t => t.type === "deposit").reduce((s, t) => s + t.amount, 0);
+            {sortedDays.map((day: string, dayIdx: number) => {
+              const dayExpenses = grouped[day].filter((t: any) => t.type === "expense").reduce((s: number, t: any) => s + t.amount, 0);
+              const dayDeposits = grouped[day].filter((t: any) => t.type === "deposit").reduce((s: number, t: any) => s + t.amount, 0);
               return (
                 <div key={day}>
                   {/* Date Header */}
@@ -132,7 +132,7 @@ export default async function Dashboard() {
                   </div>
 
                   {/* Items */}
-                  {grouped[day].map((tx, i) => {
+                  {grouped[day].map((tx: any, i: number) => {
                     const isLast = i === grouped[day].length - 1;
                     if (tx.type === "deposit") {
                       return (

@@ -20,7 +20,7 @@ function BarView({ data, dataKey = "total", color }: { data: any[]; dataKey?: st
         <YAxis stroke="var(--text-muted)" tick={{ fill: "var(--text-muted)", fontSize: 11 }} tickFormatter={fmt} width={60} />
         <Tooltip formatter={fmt} contentStyle={PANEL_STYLE} cursor={{ fill: "rgba(255,255,255,0.04)" }} />
         <Bar dataKey={dataKey} radius={[4, 4, 0, 0]}>
-          {data.map((_, i) => <Cell key={i} fill={color || COLORS[i % COLORS.length]} />)}
+          {data.map((_: any, i: number) => <Cell key={i} fill={color || COLORS[i % COLORS.length]} />)}
           <LabelList dataKey={dataKey} position="top" formatter={(v: any) => v > 0 ? `₹${v}` : ""} style={{ fill: "rgba(255,255,255,0.7)", fontSize: 11, fontWeight: 600 }} />
         </Bar>
       </BarChart>
@@ -57,14 +57,14 @@ function PieWithLegend({ data, valueKey = "value" }: { data: any[]; valueKey?: s
       <ResponsiveContainer width="100%" height={260}>
         <PieChart>
           <Pie data={data} cx="50%" cy="50%" innerRadius={55} outerRadius={95} paddingAngle={4} dataKey={valueKey}
-            label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`} labelLine={false}>
-            {data.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+            label={({ name, percent }: { name: string; percent: number }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`} labelLine={false}>
+            {data.map((_: any, i: number) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
           </Pie>
           <Tooltip formatter={fmt} contentStyle={PANEL_STYLE} />
         </PieChart>
       </ResponsiveContainer>
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: "12px" }}>
-        {data.map((d, i) => (
+        {data.map((d: any, i: number) => (
           <div key={d.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <div style={{ width: 10, height: 10, borderRadius: "50%", background: COLORS[i % COLORS.length], flexShrink: 0 }} />
@@ -110,7 +110,7 @@ export default function AnalyticsCharts({
     <div className="glass-panel">
       {/* Tab Bar */}
       <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "28px", borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "16px" }}>
-        {TABS.map(tab => (
+        {TABS.map((tab: any) => (
           <button key={tab.id} type="button" onClick={() => setActive(tab.id)}
             style={{
               padding: "7px 14px", borderRadius: "100px", border: "none", cursor: "pointer",

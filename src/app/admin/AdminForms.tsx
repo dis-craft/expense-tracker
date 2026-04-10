@@ -12,7 +12,7 @@ export default function AdminForms({ actionType }: { actionType: "deposit" | "pr
   if (actionType === "deposit") {
     return (
       <form
-        action={async (fd) => {
+        action={async (fd: FormData) => {
           setLoading(true);
           await addDeposit(fd);
           setLoading(false);
@@ -23,7 +23,7 @@ export default function AdminForms({ actionType }: { actionType: "deposit" | "pr
           <label className="form-label" style={{ fontSize: "0.78rem" }}>Who paid?</label>
           <select className="form-select" name="personName" required style={{ textTransform: "capitalize" }}>
             <option value="" disabled>Select person</option>
-            {ROOMMATES.map(r => (
+            {ROOMMATES.map((r: string) => (
               <option key={r} value={r} style={{ textTransform: "capitalize" }}>{r}</option>
             ))}
           </select>
@@ -48,7 +48,7 @@ export default function AdminForms({ actionType }: { actionType: "deposit" | "pr
 
   if (actionType === "preset") {
     return (
-      <form action={async (fd) => {
+      <form action={async (fd: FormData) => {
         setLoading(true);
         await addPreset(fd);
         setLoading(false);

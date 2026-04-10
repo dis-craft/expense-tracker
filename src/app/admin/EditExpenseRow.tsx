@@ -25,7 +25,7 @@ export default function EditExpenseRow({
       padding: "14px 16px",
     }}>
       {editing ? (
-        <form action={async (fd) => {
+        <form action={async (fd: FormData) => {
           setSaving(true);
           fd.append("id", id);
           await updateExpense(fd);
@@ -81,7 +81,7 @@ export default function EditExpenseRow({
             }}>
               <Pencil size={14} color="var(--primary-accent)" />
             </button>
-            <form action={async (fd) => {
+            <form action={async (fd: FormData) => {
               if (!confirm(`Delete "${description}"?`)) return;
               fd.append("id", id);
               await deleteExpense(fd);

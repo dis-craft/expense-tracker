@@ -20,7 +20,7 @@ export default function ExpenseForm({ presets }: { presets: string[] }) {
   };
 
   return (
-    <form ref={formRef} action={async (formData) => {
+    <form ref={formRef} action={async (formData: FormData) => {
       setLoading(true);
       await addExpense(formData);
       formRef.current?.reset();
@@ -32,7 +32,7 @@ export default function ExpenseForm({ presets }: { presets: string[] }) {
         <div style={{ marginBottom: "16px" }}>
           <label className="form-label">Quick Add</label>
           <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-            {presets.map(p => (
+            {presets.map((p: string) => (
               <button
                 key={p} type="button"
                 className="btn btn-secondary"
@@ -62,7 +62,7 @@ export default function ExpenseForm({ presets }: { presets: string[] }) {
           required
           placeholder="e.g. Milk"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)}
         />
       </div>
 
