@@ -66,7 +66,7 @@ export default async function AdminDashboard() {
             <p style={{ color: "var(--text-muted)", textAlign: "center", padding: "32px 0" }}>No expenses yet.</p>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {allExpenses.map(exp => (
+              {allExpenses.map((exp: any) => (
                 <EditExpenseRow
                   key={exp.id}
                   id={exp.id}
