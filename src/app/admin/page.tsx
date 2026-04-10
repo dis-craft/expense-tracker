@@ -49,7 +49,7 @@ export default async function AdminDashboard() {
           <p style={{ marginBottom: "16px", color: "var(--text-muted)", fontSize: "0.9rem" }}>Add quick-add buttons like "Milk".</p>
           <AdminForms actionType="preset" />
           <div style={{ marginTop: "14px", display: "flex", gap: "8px", flexWrap: "wrap" }}>
-            {presets.map(p => (
+            {presets.map((p: any) => (
               <span key={p.id} style={{ padding: "4px 12px", background: "rgba(255,255,255,0.08)", borderRadius: "100px", fontSize: "0.82rem" }}>
                 {p.name}
               </span>

@@ -42,7 +42,9 @@ function AreaView({ data, color = "#6366f1" }: { data: any[]; color?: string }) 
         <XAxis dataKey="name" stroke="var(--text-muted)" tick={{ fill: "var(--text-muted)", fontSize: 11 }} angle={-35} textAnchor="end" interval={0} />
         <YAxis stroke="var(--text-muted)" tick={{ fill: "var(--text-muted)", fontSize: 11 }} tickFormatter={fmt} width={60} />
         <Tooltip formatter={fmt} contentStyle={PANEL_STYLE} />
-        <Area type="monotone" dataKey="total" stroke={color} strokeWidth={2} fill="url(#areaGrad)" dot={{ fill: color, r: 3 }} />
+        <Area type="monotone" dataKey="total" stroke={color} strokeWidth={2} fill="url(#areaGrad)" dot={{ fill: color, r: 3 }}>
+          <LabelList dataKey="total" position="top" formatter={fmt} style={{ fill: "rgba(255,255,255,0.7)", fontSize: 10, fontWeight: 600 }} />
+        </Area>
       </AreaChart>
     </ResponsiveContainer>
   );
