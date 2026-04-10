@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  role          Role      @default(USER)
+  expenses      Expense[]
+  deposits      Deposit[]
+
+  @@map("users")
+}
+
+model Expense {
+  id          String   @id @default(cuid())
+  amount      Float
+  description String
+  category    String
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  userId      String   @map("user_id")
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@map("expenses")
+}
+
+model Deposit {
+  id        String   @id @default(cuid())
+  amount    Float
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("deposits")
+}
+
+model CategoryPreset {
+  id   String @id @default(cuid())
+  name String @unique
+
+  @@map("category_presets")
+}
