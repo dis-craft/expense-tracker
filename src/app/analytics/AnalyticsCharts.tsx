@@ -57,7 +57,7 @@ function PieWithLegend({ data, valueKey = "value" }: { data: any[]; valueKey?: s
       <ResponsiveContainer width="100%" height={260}>
         <PieChart>
           <Pie data={data} cx="50%" cy="50%" innerRadius={55} outerRadius={95} paddingAngle={4} dataKey={valueKey}
-            label={({ name, percent }: { name: string; percent: number }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`} labelLine={false}>
+            label={({ name, percent }: any) => `${name || ""} ${((percent || 0) * 100).toFixed(0)}%`} labelLine={false}>
             {data.map((_: any, i: number) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
           </Pie>
           <Tooltip formatter={fmt} contentStyle={PANEL_STYLE} />
