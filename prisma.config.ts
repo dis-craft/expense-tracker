@@ -1,14 +1,16 @@
 import "dotenv/config";
-import { defineConfig } from "prisma/config";
+import { defineConfig, env } from "prisma/config";
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
 
-  migrate: {
-    url: process.env.DIRECT_URL, // ✅ direct connection for migrations
+  datasource: {
+    // The CLI uses this URL for migrations and introspection.
+    // Ensure this points to the direct connection if using a pooler.
+    url: env("DIRECT_URL") || env("DATABASE_URL"),
   },
 
-  db: {
-    url: process.env.DATABASE_URL, // ✅ pooled connection for runtime
+  migrations: {
+    path: "prisma/migrations",
   },
 });
