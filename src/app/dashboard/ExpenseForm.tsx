@@ -7,8 +7,11 @@ export default function ExpenseForm({ presets }: { presets: string[] }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("Groceries");
 
   const currentDate = new Date().toISOString().slice(0, 10);
+
+  const predefinedCategories = ["Groceries", "Fruits & Veggies", "Dairy", "Utilities", "Other"];
 
   const handlePresetClick = (preset: string) => {
     setDescription(preset);
@@ -25,6 +28,7 @@ export default function ExpenseForm({ presets }: { presets: string[] }) {
       await addExpense(formData);
       formRef.current?.reset();
       setDescription("");
+      setCategory("Groceries");
       setLoading(false);
     }}>
       {/* Quick Presets */}
@@ -66,23 +70,45 @@ export default function ExpenseForm({ presets }: { presets: string[] }) {
         />
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-        <div className="form-group">
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "16px" }}>
+        <div className="form-group" style={{ marginBottom: "0" }}>
           <label className="form-label" htmlFor="amount">Amount (₹)</label>
           <input className="form-input" type="number" id="amount" name="amount" step="1" min="1" required placeholder="0" />
         </div>
-        <div className="form-group">
+        <div className="form-group" style={{ marginBottom: "0" }}>
           <label className="form-label" htmlFor="date">Date</label>
           <input className="form-input" type="date" id="date" name="date" defaultValue={currentDate} required />
         </div>
       </div>
 
+      {/* Category selector chips */}
       <div className="form-group">
-        <label className="form-label" htmlFor="category">Category</label>
-        <input className="form-input" type="text" id="category" name="category" required placeholder="e.g. Groceries" />
+        <label className="form-label">Category</label>
+        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginTop: "4px" }}>
+          {predefinedCategories.map((c) => (
+            <button
+              key={c}
+              type="button"
+              className="btn btn-secondary"
+              style={{
+                padding: "6px 12px", fontSize: "0.85rem", borderRadius: "10px",
+                background: category === c ? "var(--primary-accent)" : undefined,
+                color: category === c ? "white" : undefined,
+                borderColor: category === c ? "var(--primary-accent)" : undefined,
+                transition: "all 0.2s",
+                cursor: "pointer",
+              }}
+              onClick={() => setCategory(c)}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+        {/* Hidden input to pass the selected category to the form action */}
+        <input type="hidden" name="category" value={category} />
       </div>
 
-      <button type="submit" className="btn btn-primary" style={{ width: "100%", marginTop: "8px" }} disabled={loading}>
+      <button type="submit" className="btn btn-primary" style={{ width: "100%", marginTop: "16px" }} disabled={loading}>
         {loading ? "Adding..." : "Log Expense"}
       </button>
     </form>
